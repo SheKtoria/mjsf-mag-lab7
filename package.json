@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "docker-run": "docker build --tag shepel:latest . && docker run --rm -p 8080:80 --name shepel-instance shepel:latest",
-    "docker-stop": "docker stop shepel-instance"
+    "docker-run": "docker build --tag vue-lab-1:latest . && docker run --rm -p 8080:80 --name vue-lab-1-instance vue-lab-1:latest",
+    "docker-stop": "docker stop vue-lab-1-instance"
   },
   "dependencies": {
     "vue": "^3.3.4"
