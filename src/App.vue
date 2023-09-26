@@ -1,30 +1,25 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import TasksPage from './components/TasksPage.vue'
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <section class="vh-100 vw-100 gradient-custom">
+    <TasksPage/>
+  </section>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style>
+
+#app {
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.gradient-custom {
+  background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
+  linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
+  linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
+  radial-gradient(100% 164.72% at 100% 100%, #6100ff 0%, #00ff57 100%),
+  radial-gradient(100% 148.07% at 0% 0%, #fff500 0%, #51d500 100%);
+  background-blend-mode: screen, color-dodge, overlay, difference, normal;
 }
 </style>
