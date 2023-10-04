@@ -25,7 +25,6 @@ import {Task} from "../models/task.js";
 export default {
   name: 'TaskPage',
   components: {TasksList, TasksNavigation, AddNewTask},
-  inject: ['services'],
   data() {
     return {
       tasks: [],
@@ -37,13 +36,13 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    this.tasks = await this.services.todo.fetch();
+    this.tasks = await this.$services.todo.fetch();
     this.loading = false;
   },
 
   methods: {
     addTask() {
-        this.services.todo.save(this.model).then((res)=>{
+        this.$services.todo.save(this.model).then((res)=>{
           this.tasks.push(res)
           this.model = new Task();
         })
@@ -81,7 +80,7 @@ export default {
     },
 
     updateSubmit(id) {
-      this.services.todo.update(this.editedTask).then((res) => {
+      this.$services.todo.update(this.editedTask).then((res) => {
         this.tasks = res;
         this.editedTask = {};
         this.model = new Task();
@@ -90,7 +89,7 @@ export default {
     },
 
     removeTask(id) {
-      this.services.todo.delete(id).then(()=>{
+      this.$services.todo.delete(id).then(()=>{
         this.tasks = this.tasks.filter(el => el.id !== id)
         this.model = new Task();
       })
