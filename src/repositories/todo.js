@@ -21,10 +21,8 @@ export class TodoLocalStorageRepository extends ITodoRepository {
       const res = items.filter((item) => {
         return item.id !== id
       });
-      if (res.length > 0) {
         localStorage.setItem('todos', JSON.stringify(res))
         resolve(res);
-      }
     })
   }
 
@@ -34,7 +32,6 @@ export class TodoLocalStorageRepository extends ITodoRepository {
       items.map((item) => {
         if (item.id === model.id ) {
           item.title = model.title;
-          item.description = model.description
         }
       });
       localStorage.setItem('todos', JSON.stringify(items))
