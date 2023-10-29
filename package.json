@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "docker-run": "docker build --tag vue-lab-1:latest . && docker run --rm -p 8080:80 --name vue-lab-1-instance vue-lab-1:latest",
-    "docker-stop": "docker stop vue-lab-1-instance"
+    "docker-stop": "docker stop vue-lab-1-instance",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "bootstrap": "^5.3.2",
