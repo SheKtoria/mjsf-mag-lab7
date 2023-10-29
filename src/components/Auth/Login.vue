@@ -35,6 +35,7 @@ import router from "../../router/index.js";
 import TasksNavigation from "../TasksNavigation.vue";
 import TasksList from "../TasksList.vue";
 import AddNewTask from "../AddNewTask.vue";
+import {mapActions} from "vuex";
 
 export default {
   components: {AddNewTask, TasksList, TasksNavigation},
@@ -46,9 +47,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['authUser']),
     login() {
       signInWithEmailAndPassword(auth, this.email, this.password)
           .then(() => {
+            this.authUser(auth.currentUser)
             router.push({path: '/todo'})
           })
           .catch((error) => {

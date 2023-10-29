@@ -5,8 +5,8 @@
         <RouterLink class="me-4" to="/todo">ToDo</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </div>
-      <div class="d-flex ms-5 mt-2 mb-1 justify-content-end align-items-center" v-if="isLoggedIn">
-        <p class="fw-bold mb-0 me-2">Welcome, <span class="ms-1 fw-light">{{ displayName }}</span></p>
+      <div class="d-flex ms-5 mt-2 mb-1 justify-content-end align-items-center" v-if="isAuthenticated">
+        <p class="fw-bold mb-0 me-2">Welcome, <span class="ms-1 fw-light">{{ user.displayName }}</span></p>
         <button class="pt-1 pb-1" @click="signOut">Sign Out</button>
       </div>
     </nav>
@@ -19,24 +19,23 @@
 import {auth} from './firebase/index.js'
 import {signOut, onAuthStateChanged} from 'firebase/auth'
 import router from "./router/index.js";
+import {mapActions, mapState} from "vuex";
 
 export default {
-  data() {
-    return {
-      displayName: '',
-      isLoggedIn: false
-    }
+  computed: {
+    ...mapState(["user", "isAuthenticated"])
   },
   mounted() {
     onAuthStateChanged(auth, (user) => {
-      this.displayName = user ? user.displayName : '';
-      this.isLoggedIn = !!user && user.emailVerified;
+      this.authUser(user)
     })
   },
   methods: {
+    ...mapActions(['authUser', 'logout']),
     signOut() {
       signOut(auth)
           .then(() => {
+            this.logout()
             router.push('/login')
           })
     }

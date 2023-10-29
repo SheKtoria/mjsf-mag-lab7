@@ -5,6 +5,7 @@
         <div class="card">
           <div class="card-body p-4">
             <form @submit.prevent="signUp">
+              <div v-if="!resendEmail">
               <h2>Register</h2>
               <div class="mb-2">
                 <input aria-required="true" type="text" placeholder="user name" required v-model="username">
@@ -19,10 +20,14 @@
                 <p class="text-danger">{{ error.text }}</p>
               </div>
               <button class="mt-3 mb-3">Sign Up</button>
-              <p class="fw-lighter" v-if="resendEmail" @click="resendVerificationEmail">Resend email verification</p>
               <p>Already have an account?
                 <router-link to="/login">Sign In</router-link>
               </p>
+              </div>
+              <div v-else>
+                <p class="text-success">Verification list was sent to your email. Please, verify your profile</p>
+                <p class="fw-lighter" v-if="resendEmail" @click="resendVerificationEmail">Resend email verification</p>
+              </div>
             </form>
           </div>
         </div>
@@ -34,6 +39,8 @@
 <script>
 import {createUserWithEmailAndPassword, updateProfile, sendEmailVerification} from 'firebase/auth'
 import {auth} from '../../firebase/index.js'
+import {mapActions} from "vuex";
+import router from "../../router/index.js";
 
 export default {
   name: 'Login',
@@ -50,6 +57,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['authUser']),
     signUp() {
       createUserWithEmailAndPassword(auth, this.email, this.password)
           .then(() => {
@@ -57,6 +65,7 @@ export default {
               displayName: this.username
             })
             this.verifyUser();
+            this.authUser(auth.currentUser)
             this.resendEmail = true;
           })
           .catch((error) => {
@@ -69,14 +78,15 @@ export default {
       if (!auth.currentUser.emailVerified) {
         this.verifyUser()
       }
+      else {
+        this.authUser(auth.currentUser)
+        router.push('/todo')
+      }
     },
 
     verifyUser() {
-      const actionCodeSettings = {
-        url: `http://localhost:5173/todo?verified`,
-      };
+      const actionCodeSettings = {url: `http://localhost:5173/todo?verified`};
       sendEmailVerification(auth.currentUser, actionCodeSettings);
-      alert('Verification list was sent to your email. Please, verify your profile')
     }
   }
 }

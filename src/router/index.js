@@ -4,6 +4,7 @@ import AboutMe from "../components/AboutMe.vue";
 import Register from "../components/Auth/Register.vue";
 import Login from "../components/Auth/Login.vue";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
+import store from "../store/index.js";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,9 +54,9 @@ const router = createRouter({
 
 const currentUser = () => {
     return new Promise((resolve, reject) => {
-        const removeListener = onAuthStateChanged(getAuth(), (user) => {
+        const removeListener = onAuthStateChanged(getAuth(), () => {
             removeListener();
-            resolve(user && user.emailVerified);
+            resolve(store.getters.GET_IS_AUTHENTICATED);
         }, reject)
     })
 }
@@ -63,7 +64,7 @@ router.beforeEach(async (to) => {
     if (to.meta.requiresAuth && !await currentUser()) {
         return {name: 'login'};
     }
-    if ((to.name === 'login' || to.name === 'register') && await currentUser()) {
+    if (((to.name === 'login' || to.name === 'register') && await currentUser()) || to.path === '/') {
         return {name: 'todo'}
     }
     return true;
